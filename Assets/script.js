@@ -1,15 +1,16 @@
 
 var APIKey ="33ba9af51fbe9a62543d67bc2a30b9e8";
-var city;
+var city = 'seattle';
 var state;
 var country;
 var limit = 5;
-var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?&appid=' + APIKey;
+var citySearch = 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=33ba9af51fbe9a62543d67bc2a30b9e8';
 var searchBtn = document.getElementById('btn');
+var inputValue = document.getElementById('input')
 
 function getApi() {
-   
-    fetch(requestUrl)
+
+    fetch(citySearch)
     .then(function (response){
         console.log(response.status)
         return response.json();
