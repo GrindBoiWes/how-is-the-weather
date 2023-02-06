@@ -33,3 +33,10 @@ h1 {
     width:410px;
     padding: 10px;
 }
+
+.five-day {
+    border-radius: 10px;
+    background-color:aliceblue;
+    color:black;
+    
+}
