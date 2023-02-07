@@ -2,8 +2,9 @@
 var APIkey = '7a7c04d503977a6da6ac8ba6bdb48f18';
 var cityInputEl = document.getElementById('city-input');
 var submitBtn = document.querySelector('.btn');
-var previousCityEl = document.getElementById('history');
-var fiveResults = document.querySelector('.five-day');
+//var previousCityEl = document.getElementById('history');
+//var fiveResults = document.querySelector('.five-day');
+var weatherEl = document.querySelector('.five-day');
 
 
 function getWeather() {
@@ -19,12 +20,13 @@ function getWeather() {
     })
     .then(function (data) {
       console.log(data);
-    });
+      displayResults(data);
+    }); 
 };
 
 function displayResults(data) {
    var fiveResults = document.createElement('li');
-   fiveResults.classList.add('weather');
+   fiveResults.classList.add('card-columns', 'col-9', 'bg-info', 'p-2');
 
    var cityName = data.city.name;
    var weatherCondition = data.list[0].weather[0].main;
@@ -34,10 +36,7 @@ function displayResults(data) {
    weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '<p>weather: ' + weatherCondition + ' _ ' + weatherDescription + '</p>' +
    '<p>temperature:' + temperature + '</p>';
 
-   previousCityEl.appendChild(fiveResults)
-    .then(function(data){
-      displayResults(data);
-    });
-};
+   weatherEl.appendChild(fiveResults)
+    };
 
 submitBtn.addEventListener('click', getWeather);
