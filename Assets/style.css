@@ -34,16 +34,18 @@ h1 {
     padding: 10px;
 }
 
-.five-day {
+/*.five-day {
     border-radius: 10px;
     background-color:aqua;
     color:black;
 
-} 
+} */
 
 .card-container {
     border-radius:10px;
-    padding: 5px;
+    padding: 5px 5px;
     display: inline;
-   
+    margin: 10px;
+    background-color:aqua;
+    
 }
