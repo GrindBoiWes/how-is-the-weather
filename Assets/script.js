@@ -21,7 +21,9 @@ function getWeather() {
     .then(function (data) {
       console.log(data);
       displayResults(data);
+      fiveDayForecast(data);
     }); 
+    //fiveDayForecast(data);
    };
 
 
@@ -42,20 +44,20 @@ function displayResults(data) {
    //weatherEl.appendChild(weatherEl)
     };
 
-    function fiveDayForecast(city) {
+    function fiveDayForecast(data) {
       
-      var fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=' + APIkey;
+      //var fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=' + APIkey;
     
       
-      fetch(fiveDayUrl)
-        .then(function (response) {
+     // fetch(fiveDayUrl)
+        //.then(function (response) {
          
-          if (response.ok) {
-            return response.json();
-          }
-        })
-        .then(function (data) {
-          
+        //  if (response.ok) {
+        //   return response.json();
+         // }
+       //})
+       // .then(function (data) {
+          console.log(data);
           var forecastList = data.list;
           var fiveDayData = [];
           for (var i = 0; i < forecastList.length; i += 8) {
@@ -67,7 +69,7 @@ function displayResults(data) {
           }
           
           displayFiveDayForecast(fiveDayData);
-        });
+        //});
     }
     
     function displayFiveDayForecast(fiveDayData) {
@@ -82,6 +84,7 @@ function displayResults(data) {
     
        
         var dayEl = document.createElement('div');
+        dayEl.classList = ('card-container')
         dayEl.innerHTML = '<h3>' + date + '</h3>' + '<p>Temperature: ' + temperature + '°F</p>' + '<p>Weather: ' + weatherDescription + '</p>';
     
         
@@ -90,7 +93,7 @@ function displayResults(data) {
     }
     
 
-submitBtn.addEventListener('click', getWeather, fiveDayForecast);
+submitBtn.addEventListener('click', getWeather);
 
 
  //http://openweathermap.org/img/wn/10d@2x.png
