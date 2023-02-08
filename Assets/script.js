@@ -4,14 +4,14 @@ var cityInputEl = document.getElementById('city-input');
 var submitBtn = document.querySelector('.btn');
 //var previousCityEl = document.getElementById('history');
 //var fiveResults = document.querySelector('.five-day');
-var weatherEl = document.querySelector('.five-day');
+var weatherEl = document.querySelector('.results');
+var fivedayEl = document.querySelector('.five-day');
 
 
 function getWeather() {
   var city = cityInputEl.value;
-  var fiveday = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + APIkey;
-
-  fetch(fiveday)
+  var currentDay = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=' + APIkey;
+  fetch(currentDay)
     .then(function (response) {
       if (response.ok) {
         console.log(response.status);
@@ -22,21 +22,75 @@ function getWeather() {
       console.log(data);
       displayResults(data);
     }); 
-};
+   };
+
 
 function displayResults(data) {
-   var fiveResults = document.createElement('li');
-   fiveResults.classList.add('card-columns', 'col-9', 'bg-info', 'p-2');
 
    var cityName = data.city.name;
    var weatherCondition = data.list[0].weather[0].main;
-   var weatherDescription = data.list[0].weather[0].description;
+   var weatherDescription = data.list[0].weather[0].icon;
    var temperature = data.list[0].main.temp;
+   var windspeed = data.list[0].wind.speed;
+   var humidity = data.list[0].main.humidity
 
-   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '<p>weather: ' + weatherCondition + ' _ ' + weatherDescription + '</p>' +
-   '<p>temperature:' + temperature + '</p>';
+   var iconLink ='http://openweathermap.org/img/wn/' + weatherDescription + '@2x.png';
 
-   weatherEl.appendChild(fiveResults)
+   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '<p>weather:'+ weatherCondition +  
+   "<img src ='"+iconLink+"'/>" + '</p>' +'<p>temperature:' + temperature + '</p>' + '<p>windspeed ' + windspeed + '</p>' + '<p>Humidity: ' + humidity + '%</p>';
+
+   //weatherEl.appendChild(weatherEl)
     };
 
-submitBtn.addEventListener('click', getWeather);
+    function fiveDayForecast(city) {
+      
+      var fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=' + APIkey;
+    
+      
+      fetch(fiveDayUrl)
+        .then(function (response) {
+         
+          if (response.ok) {
+            return response.json();
+          }
+        })
+        .then(function (data) {
+          
+          var forecastList = data.list;
+          var fiveDayData = [];
+          for (var i = 0; i < forecastList.length; i += 8) {
+
+            var date = forecastList[i].dt_txt;
+            var temperature = forecastList[i].main.temp;
+            var weatherDescription = forecastList[i].weather[0].description;
+            fiveDayData.push({ date, temperature, weatherDescription });
+          }
+          
+          displayFiveDayForecast(fiveDayData);
+        });
+    }
+    
+    function displayFiveDayForecast(fiveDayData) {
+      
+      fivedayEl.innerHTML = '';
+    
+     
+      for (var i = 0; i < fiveDayData.length; i++) {
+        var date = fiveDayData[i].date;
+        var temperature = fiveDayData[i].temperature;
+        var weatherDescription = fiveDayData[i].weatherDescription;
+    
+       
+        var dayEl = document.createElement('div');
+        dayEl.innerHTML = '<h3>' + date + '</h3>' + '<p>Temperature: ' + temperature + '°F</p>' + '<p>Weather: ' + weatherDescription + '</p>';
+    
+        
+        fivedayEl.appendChild(dayEl);
+      }
+    }
+    
+
+submitBtn.addEventListener('click', getWeather, fiveDayForecast);
+
+
+ //http://openweathermap.org/img/wn/10d@2x.png
