@@ -99,13 +99,17 @@ function displayResults(data) {
     function displaySearchedCities() {
       
       previousCityEl.innerHTML = '';
-
+      
       for (var i = 0; i < searchedCities.length; i++) {
         var city = searchedCities[i];
 
         var cityEl = document.createElement('p');
         cityEl.innerHTML = city;
 
+        localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
+        searchedCities = JSON.parse(localStorage.getItem("searchedCities")) || [];
+
+       
         previousCityEl.appendChild(cityEl);
       }
     };
