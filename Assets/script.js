@@ -46,49 +46,53 @@ function displayResults(data) {
 
     function fiveDayForecast(data) {
       
-      //var fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=' + APIkey;
-    
-      
-     // fetch(fiveDayUrl)
-        //.then(function (response) {
-         
-        //  if (response.ok) {
-        //   return response.json();
-         // }
-       //})
-       // .then(function (data) {
           console.log(data);
           var forecastList = data.list;
           var fiveDayData = [];
           for (var i = 0; i < forecastList.length; i += 8) {
 
-            var date = forecastList[i].dt_txt;
+            var dateAndTime = forecastList[i].dt_txt;
+            var date = dateAndTime.split(' ')[0];
+            date = date.slice(5);
             var temperature = forecastList[i].main.temp;
             var weatherDescription = forecastList[i].weather[0].description;
-            fiveDayData.push({ date, temperature, weatherDescription });
+            var windSpeed = forecastList[i].wind.speed;
+            var humidity = forecastList[i].main.humidity;
+            var icon = forecastList[i].weather[0].icon;
+            fiveDayData.push({ date, temperature, weatherDescription, windSpeed, humidity, icon});
           }
           
           displayFiveDayForecast(fiveDayData);
-        //});
+       
     }
     
     function displayFiveDayForecast(fiveDayData) {
       
       fivedayEl.innerHTML = '';
-    
+      
+      
+
+      var forecastHeader = document.createElement('h2');
+       forecastHeader.classList = ('five-day-header');
+       forecastHeader.innerHTML = '5 Day Forecast';
+       fivedayEl.appendChild(forecastHeader)
      
       for (var i = 0; i < fiveDayData.length; i++) {
         var date = fiveDayData[i].date;
         var temperature = fiveDayData[i].temperature;
         var weatherDescription = fiveDayData[i].weatherDescription;
-    
-       
+        var windSpeed = fiveDayData[i].windSpeed;
+        var humidity = fiveDayData[i].humidity;
+        var icon = fiveDayData[i].icon;
+        var iconLink ='http://openweathermap.org/img/wn/' + icon + '@2x.png';
+
         var dayEl = document.createElement('div');
-        dayEl.classList = ('card-container')
-        dayEl.innerHTML = '<h3>' + date + '</h3>' + '<p>Temperature: ' + temperature + '°F</p>' + '<p>Weather: ' + weatherDescription + '</p>';
+        dayEl.classList = ('card-body');
+        dayEl.innerHTML =  '<h3>' + date + '</h3>' + '<p>Temperature: ' + temperature + '°F</p>' + '<p>Weather: ' + weatherDescription + "<img src ='"+iconLink+"'/>" +  '</p>' + '<p>Wind Speed: ' + windSpeed + 'mph</p>' + '<p>Humidity: ' + humidity + '%</p>';
     
         
         fivedayEl.appendChild(dayEl);
+        
       }
     }
     
