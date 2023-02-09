@@ -2,8 +2,8 @@
 var APIkey = '7a7c04d503977a6da6ac8ba6bdb48f18';
 var cityInputEl = document.getElementById('city-input');
 var submitBtn = document.querySelector('.btn');
-//var previousCityEl = document.getElementById('history');
-//var fiveResults = document.querySelector('.five-day');
+var searchedCities = [];
+var previousCityEl = document.getElementById('history');
 var weatherEl = document.querySelector('.results');
 var fivedayEl = document.querySelector('.five-day');
 
@@ -23,7 +23,7 @@ function getWeather() {
       displayResults(data);
       fiveDayForecast(data);
     }); 
-    //fiveDayForecast(data);
+    
    };
 
 
@@ -94,10 +94,29 @@ function displayResults(data) {
         fivedayEl.appendChild(dayEl);
         
       }
-    }
+    };
+
+    function displaySearchedCities() {
+      
+      previousCityEl.innerHTML = '';
+
+      for (var i = 0; i < searchedCities.length; i++) {
+        var city = searchedCities[i];
+
+        var cityEl = document.createElement('p');
+        cityEl.innerHTML = city;
+
+        previousCityEl.appendChild(cityEl);
+      }
+    };
     
 
-submitBtn.addEventListener('click', getWeather);
+submitBtn.addEventListener('click', function() {
+  var city = cityInputEl.value;
+  searchedCities.push(city);
+  displaySearchedCities();
+  getWeather();
+});
 
 
  //http://openweathermap.org/img/wn/10d@2x.png
