@@ -56,6 +56,12 @@ h1 {
     background-color: gray;
     padding: 5px;
     margin: 5px;
-    display: block;
+    
     width:185px;
+}
+
+
+.results {
+    border : 2px solid grey;
+    padding: 5px;
 }

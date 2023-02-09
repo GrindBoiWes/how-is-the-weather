@@ -1,4 +1,4 @@
-
+// List of Dom Elements
 var APIkey = '7a7c04d503977a6da6ac8ba6bdb48f18';
 var cityInputEl = document.getElementById('city-input');
 var submitBtn = document.querySelector('.btn');
@@ -7,8 +7,9 @@ var previousCityEl = document.getElementById('history');
 var weatherEl = document.querySelector('.results');
 var fivedayEl = document.querySelector('.five-day');
 var clearSearch =  document.getElementById('clearBtn')
-
+// This function will pull the api, and then return results based off of search
 function getWeather() {
+  
   var city = cityInputEl.value;
   var currentDay = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=' + APIkey;
   fetch(currentDay)
@@ -22,11 +23,12 @@ function getWeather() {
       console.log(data);
       displayResults(data);
       fiveDayForecast(data);
+      displayCities();
     }); 
     
    };
 
-
+// This function displays the current day's weather. It is set to display A name, 
 function displayResults(data) {
 
    var cityName = data.city.name;
@@ -35,13 +37,13 @@ function displayResults(data) {
    var temperature = data.list[0].main.temp;
    var windspeed = data.list[0].wind.speed;
    var humidity = data.list[0].main.humidity
-
+   var date = new Date().toLocaleDateString();
    var iconLink ='http://openweathermap.org/img/wn/' + weatherDescription + '@2x.png';
 
-   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '<p>Weather:'+ weatherCondition +  
-   "<img src ='"+iconLink+"'/>" + '</p>' +'<p>Temperature:' + temperature + '</p>' + '<p>Windspeed: ' + windspeed + '</p>' + '<p>Humidity: ' + humidity + '%</p>';
+   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '</h2>' + '<p>Date: ' + date + '<p>Weather:'+ weatherCondition +  
+   "<img src ='"+iconLink+"'/>" + '</p>' +'<p>Temperature:' + temperature + '°F</p>' + '<p>Windspeed: ' + windspeed + 'mph</p>' + '<p>Humidity: ' + humidity + '%</p>';
 
-   //weatherEl.appendChild(weatherEl)
+   
     };
 
     function fiveDayForecast(data) {
@@ -105,7 +107,7 @@ function displayResults(data) {
   localStorage.setItem('searchedCities', JSON.stringify(searchedCities));
 });
 
-window.onload = function() {
+function displayCities() {
   var storedCities = JSON.parse(localStorage.getItem('searchedCities'));
   if (storedCities !== null) {
     searchedCities = storedCities;
@@ -126,9 +128,12 @@ function displaySearchedCities() {
     previousCityEl.appendChild(cityBtn);
   }
 }
- clearSearch.addEventListener('click', clearResults);
+ clearSearch.addEventListener('click', clearResults)
+  
+ 
 
 
  function clearResults() {
   previousCityEl.innerHTML = '';
+  localStorage.removeItem('searchedCities');
  }
