@@ -6,7 +6,7 @@ var searchedCities = [];
 var previousCityEl = document.getElementById('history');
 var weatherEl = document.querySelector('.results');
 var fivedayEl = document.querySelector('.five-day');
-
+var clearSearch =  document.getElementById('clearBtn')
 
 function getWeather() {
   var city = cityInputEl.value;
@@ -38,8 +38,8 @@ function displayResults(data) {
 
    var iconLink ='http://openweathermap.org/img/wn/' + weatherDescription + '@2x.png';
 
-   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '<p>weather:'+ weatherCondition +  
-   "<img src ='"+iconLink+"'/>" + '</p>' +'<p>temperature:' + temperature + '</p>' + '<p>windspeed ' + windspeed + '</p>' + '<p>Humidity: ' + humidity + '%</p>';
+   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '<p>Weather:'+ weatherCondition +  
+   "<img src ='"+iconLink+"'/>" + '</p>' +'<p>Temperature:' + temperature + '</p>' + '<p>Windspeed: ' + windspeed + '</p>' + '<p>Humidity: ' + humidity + '%</p>';
 
    //weatherEl.appendChild(weatherEl)
     };
@@ -48,8 +48,9 @@ function displayResults(data) {
       
           console.log(data);
           var forecastList = data.list;
+          console.log(forecastList);
           var fiveDayData = [];
-          for (var i = 0; i < forecastList.length; i += 8) {
+          for (var i = 5; i < forecastList.length; i += 8) {
 
             var dateAndTime = forecastList[i].dt_txt;
             var date = dateAndTime.split(' ')[0];
@@ -96,31 +97,38 @@ function displayResults(data) {
       }
     };
 
-    function displaySearchedCities() {
-      
-      previousCityEl.innerHTML = '';
-      
-      for (var i = 0; i < searchedCities.length; i++) {
-        var city = searchedCities[i];
 
-        var cityEl = document.createElement('p');
-        cityEl.innerHTML = city;
 
-        localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
-        searchedCities = JSON.parse(localStorage.getItem("searchedCities")) || [];
-
-       
-        previousCityEl.appendChild(cityEl);
-      }
-    };
-    
-
-submitBtn.addEventListener('click', function() {
-  var city = cityInputEl.value;
-  searchedCities.push(city);
-  displaySearchedCities();
+ submitBtn.addEventListener('click', function() {
   getWeather();
+  searchedCities.push(cityInputEl.value);
+  localStorage.setItem('searchedCities', JSON.stringify(searchedCities));
 });
 
+window.onload = function() {
+  var storedCities = JSON.parse(localStorage.getItem('searchedCities'));
+  if (storedCities !== null) {
+    searchedCities = storedCities;
+    displaySearchedCities();
+  }
+};
 
- //http://openweathermap.org/img/wn/10d@2x.png
+function displaySearchedCities() {
+  previousCityEl.innerHTML = '';
+  for (var i = 0; i < searchedCities.length; i++) {
+    var cityBtn = document.createElement('button');
+    cityBtn.classList = 'list-group-item list-group-item-action';
+    cityBtn.textContent = searchedCities[i];
+    cityBtn.addEventListener('click', function() {
+      cityInputEl.value = this.textContent;
+      getWeather();
+    });
+    previousCityEl.appendChild(cityBtn);
+  }
+}
+ clearSearch.addEventListener('click', clearResults);
+
+
+ function clearResults() {
+  previousCityEl.innerHTML = '';
+ }
