@@ -4,7 +4,7 @@ var cityInputEl = document.getElementById('city-input');
 var submitBtn = document.querySelector('.btn');
 var searchedCities = [];
 var previousCityEl = document.getElementById('history');
-var weatherEl = document.querySelector('.results');
+var weatherEl = document.querySelector('#results');
 var fivedayEl = document.querySelector('.five-day');
 var clearSearch =  document.getElementById('clearBtn')
 // This function will pull the api, and then return results based off of search
@@ -31,6 +31,13 @@ function getWeather() {
 // This function displays the current day's weather. It is set to display A name, 
 function displayResults(data) {
 
+  //var resultContainer = document.querySelector('.current-city');
+  //var weatherEl = document.createElement('ul');
+  //weatherEl.classList.add("results");
+  //resultContainer.appendChild(weatherEl);
+   
+ 
+
    var cityName = data.city.name;
    var weatherCondition = data.list[0].weather[0].main;
    var weatherDescription = data.list[0].weather[0].icon;
@@ -45,14 +52,14 @@ function displayResults(data) {
 
    
     };
-
+   // This function retrieves all of the data for the next 5 days. Inside this, you will see that we pull the same results from the current day, but we are splitting the date and time, while also starting i with a number besides 0 to pull a little further down in the array.
     function fiveDayForecast(data) {
       
           console.log(data);
           var forecastList = data.list;
           console.log(forecastList);
           var fiveDayData = [];
-          for (var i = 5; i < forecastList.length; i += 8) {
+          for (var i = 0; i < forecastList.length; i += 8) {
 
             var dateAndTime = forecastList[i].dt_txt;
             var date = dateAndTime.split(' ')[0];
@@ -68,7 +75,7 @@ function displayResults(data) {
           displayFiveDayForecast(fiveDayData);
        
     }
-    
+    // This function is what will display all of the results from above, while setting the icon pulled from the API itself, matching the current weather.    
     function displayFiveDayForecast(fiveDayData) {
       
       fivedayEl.innerHTML = '';
@@ -100,13 +107,13 @@ function displayResults(data) {
     };
 
 
-
+// This listener will start the process of pulling the data from your search. It will then store this function in the local storage inside inspect.
  submitBtn.addEventListener('click', function() {
   getWeather();
   searchedCities.push(cityInputEl.value);
   localStorage.setItem('searchedCities', JSON.stringify(searchedCities));
 });
-
+// This function is set so it can store the searched results inside the local storage
 function displayCities() {
   var storedCities = JSON.parse(localStorage.getItem('searchedCities'));
   if (storedCities !== null) {
@@ -114,7 +121,7 @@ function displayCities() {
     displaySearchedCities();
   }
 };
-
+// This function creates buttons for the searched cities, so you can click on those to check the weather from the searched city again, without having to retype the city.
 function displaySearchedCities() {
   previousCityEl.innerHTML = '';
   for (var i = 0; i < searchedCities.length; i++) {

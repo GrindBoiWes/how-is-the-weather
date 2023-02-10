@@ -61,7 +61,12 @@ h1 {
 }
 
 
-.results {
+#results {
     border : 2px solid grey;
     padding: 5px;
+}
+
+ul {
+    padding-left: 0;
+
 }
