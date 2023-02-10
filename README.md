@@ -8,7 +8,7 @@ Once that search is complete, simply type in a new city that will refresh the pa
 
 
 # Screenshot  
-
+<img src = "./Assets/Images/weatherdb.png">
 
 # Links 
 

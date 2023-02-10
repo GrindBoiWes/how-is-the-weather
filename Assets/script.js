@@ -140,3 +140,7 @@ function displaySearchedCities() {
   previousCityEl.innerHTML = '';
   localStorage.removeItem('searchedCities');
  }
+
+
+
+ // Notes for myself, eventually go back and add the classlist add and remove to git rid of pesky box at the start of the screen
