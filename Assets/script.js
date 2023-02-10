@@ -31,13 +31,6 @@ function getWeather() {
 // This function displays the current day's weather. It is set to display A name, 
 function displayResults(data) {
 
-  //var resultContainer = document.querySelector('.current-city');
-  //var weatherEl = document.createElement('ul');
-  //weatherEl.classList.add("results");
-  //resultContainer.appendChild(weatherEl);
-   
- 
-
    var cityName = data.city.name;
    var weatherCondition = data.list[0].weather[0].main;
    var weatherDescription = data.list[0].weather[0].icon;
