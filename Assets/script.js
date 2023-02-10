@@ -40,8 +40,7 @@ function displayResults(data) {
    var date = new Date().toLocaleDateString();
    var iconLink ='http://openweathermap.org/img/wn/' + weatherDescription + '@2x.png';
 
-   weatherEl.innerHTML = '<h2>' + cityName + '</h2>' + '</h2>' + '<p>Date: ' + date + '<p>Weather:'+ weatherCondition +  
-   "<img src ='"+iconLink+"'/>" + '</p>' +'<p>Temperature:' + temperature + '°F</p>' + '<p>Windspeed: ' + windspeed + 'mph</p>' + '<p>Humidity: ' + humidity + '%</p>';
+   weatherEl.innerHTML = '<h2>' + cityName + ' '  + date  + "<img src ='"+iconLink+"'/>" + '</h2>' + '<p>Weather:'+ weatherCondition  + '</p>' +'<p>Temperature:' + temperature + '°F</p>' + '<p>Windspeed: ' + windspeed + 'mph</p>' + '<p>Humidity: ' + humidity + '%</p>';
 
    
     };
@@ -55,8 +54,12 @@ function displayResults(data) {
           for (var i = 0; i < forecastList.length; i += 8) {
 
             var dateAndTime = forecastList[i].dt_txt;
-            var date = dateAndTime.split(' ')[0];
-            date = date.slice(5);
+            var dateObj = new Date(dateAndTime);
+            var month = dateObj.getMonth() + 1;  // months are zero-indexed
+            var day = dateObj.getDate();
+            var year = dateObj.getFullYear();
+            var date = month + '/' + day + '/' + year;
+
             var temperature = forecastList[i].main.temp;
             var weatherDescription = forecastList[i].weather[0].description;
             var windSpeed = forecastList[i].wind.speed;
